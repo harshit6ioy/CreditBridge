@@ -1,0 +1,22 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+.placeholder-bold::placeholder {
+  font-weight: 700; /* Bold */
+  color: #555;       /* Optional: darker placeholder */
+}
+.input-box {
+  width: 100%;
+  padding: 12px;
+  border-radius: 8px;
+  background: rgba(255,255,255,0.6);
+  border: 1px solid #ccc;
+  color: #111;
+  font-weight: 600;
+  outline: none;
+}
+.dark .input-box {
+  background: rgba(31, 41, 55, 0.7);
+  border-color: #4b5563;
+  color: white;
+}

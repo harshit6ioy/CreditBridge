@@ -14,11 +14,12 @@ export default function ApplyLoanPage1() {
   const [panNumber, setPanNumber] = useState("");
   const [salary, setSalary] = useState("");
   const [requestedAmount, setRequestedAmount] = useState("");
+  const [loanPurpose, setLoanPurpose] = useState("");
   const [maritalStatus, setMaritalStatus] = useState("Single");
   const [nationality, setNationality] = useState("Indian");
   const [age, setAge] = useState("");
   const [dependents, setDependents] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState(""); // Added phone number field
+  const [phoneNumber, setPhoneNumber] = useState("");
 
   /* ================= LOAD VERIFIED USER ================= */
   useEffect(() => {
@@ -39,12 +40,10 @@ export default function ApplyLoanPage1() {
 
   if (loadingUser) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-white to-indigo-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+      <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900">
         <div className="text-center">
-          <div className="w-16 h-16 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-gray-600 dark:text-gray-300 font-medium animate-pulse">
-            Loading user details...
-          </p>
+          <div className="w-16 h-16 border-4 border-blue-100 dark:border-blue-900 border-t-blue-600 dark:border-t-blue-500 rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-gray-600 dark:text-gray-300 font-medium">Loading user details...</p>
         </div>
       </div>
     );
@@ -52,8 +51,16 @@ export default function ApplyLoanPage1() {
 
   /* ================= SUBMIT ================= */
   const handleContinue = () => {
-    if (!panNumber || !salary || !requestedAmount || !age || dependents === "" || !phoneNumber) {
-      alert("All fields are required");
+    if (
+      !panNumber ||
+      !salary ||
+      !requestedAmount ||
+      !loanPurpose ||
+      !age ||
+      dependents === "" ||
+      !phoneNumber
+    ) {
+      alert("Please fill all required fields");
       return;
     }
 
@@ -66,11 +73,12 @@ export default function ApplyLoanPage1() {
         panNumber,
         salary,
         requestedAmount,
+        loanPurpose,
         maritalStatus,
         nationality,
         age,
         dependents,
-        phoneNumber, // Added phone number to local storage
+        phoneNumber,
       })
     );
 
@@ -79,263 +87,284 @@ export default function ApplyLoanPage1() {
 
   /* ================= UI ================= */
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 p-4 md:p-8">
-      {/* Animated Background Elements */}
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 p-4 md:p-8 transition-colors duration-200">
       <EmiCalculatorButton />
       <ProfileIcon />
 
-      <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-40 -right-40 w-80 h-80 bg-blue-300 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob"></div>
-        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-indigo-300 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000"></div>
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-purple-300 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-4000"></div>
-      </div>
-
-      {/* Main Container */}
-      <div className="relative max-w-2xl mx-auto">
-        {/* Progress Bar */}
+      <div className="max-w-4xl mx-auto">
+        {/* Header */}
         <div className="mb-8">
-          <div className="flex items-center justify-between mb-2">
-            <div className="text-sm font-semibold text-blue-600 dark:text-blue-400">
-              Step 1 of 2
-            </div>
-            <div className="text-sm font-medium text-gray-600 dark:text-gray-400">
-              50% Complete
-            </div>
-          </div>
-          <div className="h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
-            <div className="h-full w-1/2 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-full transition-all duration-500"></div>
-          </div>
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Loan Application</h1>
+          <p className="text-gray-600 dark:text-gray-300 mt-2">Complete your personal and financial details</p>
         </div>
 
-        {/* Main Card */}
-        <div className="relative bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl rounded-3xl shadow-2xl overflow-hidden border border-white/20 dark:border-gray-700/50">
-          {/* Card Header */}
-          <div className="relative p-8 bg-gradient-to-r from-blue-600 to-indigo-700 text-white">
-            <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -translate-y-16 translate-x-16"></div>
-            <div className="relative z-10">
-              <h1 className="text-3xl font-bold mb-2">Loan Application</h1>
-              <p className="text-blue-100">Complete your personal and financial details</p>
-            </div>
-            <div className="absolute bottom-4 right-8">
-              <div className="flex items-center space-x-2 bg-white/20 backdrop-blur-sm rounded-full px-4 py-2">
-                <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-                <span className="text-sm font-medium">User Verified</span>
+        <div className="flex flex-col lg:flex-row gap-8">
+          {/* Left Panel - Form */}
+          <div className="lg:w-2/3">
+            <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg dark:shadow-gray-900/30 overflow-hidden transition-colors duration-200">
+              {/* Form Header */}
+              <div className="px-8 py-6 border-b border-gray-200 dark:border-gray-700">
+                <div className="flex items-center justify-between">
+                  <h2 className="text-xl font-semibold text-gray-900 dark:text-white">2.1.1 Loan Summary</h2>
+                  <div className="flex items-center space-x-2">
+                    <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                    <span className="text-sm text-green-600 dark:text-green-400 font-medium">User Verified</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* User Info */}
+              <div className="px-8 py-6 bg-blue-50 dark:bg-blue-900/20 border-b border-gray-200 dark:border-gray-700">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h3 className="text-lg font-bold text-gray-900 dark:text-white">{user?.name || "Annan Kumar"}</h3>
+                    <p className="text-gray-600 dark:text-gray-300">ID: {user?.id || "101"}</p>
+                  </div>
+                  <div className="text-right">
+                    <div className="text-sm text-gray-500 dark:text-gray-400">Progress</div>
+                    <div className="text-lg font-bold text-blue-600 dark:text-blue-400">50% Complete</div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Form Content */}
+              <div className="p-8">
+                <div className="space-y-8">
+                  {/* Row 1 - Financial Details */}
+                  <div className="grid md:grid-cols-2 gap-6">
+                    <div>
+                      <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                        PAN Number
+                      </label>
+                      <input
+                        type="text"
+                        value={panNumber}
+                        onChange={(e) => setPanNumber(e.target.value.toUpperCase())}
+                        className="w-full px-4 py-3 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 transition-colors duration-200 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
+                        placeholder="ABCDE1234F"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                        Monthly Salary
+                      </label>
+                      <div className="relative">
+                        <span className="absolute left-3 top-3 text-gray-500 dark:text-gray-400">₹</span>
+                        <input
+                          type="number"
+                          value={salary}
+                          onChange={(e) => setSalary(e.target.value)}
+                          className="w-full pl-8 pr-4 py-3 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 transition-colors duration-200 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
+                          placeholder="50,000"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Row 2 - Loan Details */}
+                  <div className="grid md:grid-cols-2 gap-6">
+                    <div>
+                      <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                        Loan Amount
+                      </label>
+                      <div className="relative">
+                        <span className="absolute left-3 top-3 text-gray-500 dark:text-gray-400">₹</span>
+                        <input
+                          type="number"
+                          value={requestedAmount}
+                          onChange={(e) => setRequestedAmount(e.target.value)}
+                          className="w-full pl-8 pr-4 py-3 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 transition-colors duration-200 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
+                          placeholder="15,00,000"
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                        Marital Status
+                      </label>
+                      <select
+                        value={maritalStatus}
+                        onChange={(e) => setMaritalStatus(e.target.value)}
+                        className="w-full px-4 py-3 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 transition-colors duration-200 text-gray-900 dark:text-white"
+                      >
+                        <option value="Single">Single</option>
+                        <option value="Married">Married</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  {/* Row 3 - Personal Details */}
+                  <div className="grid md:grid-cols-3 gap-6">
+                    <div>
+                      <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                        Nationality
+                      </label>
+                      <select
+                        value={nationality}
+                        onChange={(e) => setNationality(e.target.value)}
+                        className="w-full px-4 py-3 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 transition-colors duration-200 text-gray-900 dark:text-white"
+                      >
+                        <option value="Indian">Indian</option>
+                        <option value="Other">Other</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                        Age
+                      </label>
+                      <input
+                        type="number"
+                        value={age}
+                        onChange={(e) => setAge(e.target.value)}
+                        className="w-full px-4 py-3 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 transition-colors duration-200 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
+                        placeholder="28"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                        Dependents
+                      </label>
+                      <input
+                        type="number"
+                        value={dependents}
+                        onChange={(e) => setDependents(e.target.value)}
+                        className="w-full px-4 py-3 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 transition-colors duration-200 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
+                        placeholder="2"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Row 4 - Contact */}
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                      Phone Number
+                    </label>
+                    <input
+                      type="tel"
+                      value={phoneNumber}
+                      onChange={(e) => setPhoneNumber(e.target.value)}
+                      className="w-full px-4 py-3 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 transition-colors duration-200 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
+                      placeholder="+91 9876543210"
+                    />
+                  </div>
+
+                  {/* Row 5 - Loan Purpose */}
+                  <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
+                    <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                      Loan Purpose
+                    </label>
+                    <select
+                      value={loanPurpose}
+                      onChange={(e) => setLoanPurpose(e.target.value)}
+                      className="w-full px-4 py-3 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 transition-colors duration-200 text-gray-900 dark:text-white"
+                    >
+                      <option value="">Select Loan Purpose</option>
+                      <option value="Education">Education</option>
+                      <option value="Medical">Medical</option>
+                      <option value="Home">Home</option>
+                      <option value="Business">Business</option>
+                      <option value="Personal">Personal</option>
+                    </select>
+                  </div>
+                </div>
+
+                {/* Submit Button */}
+                <div className="mt-10 pt-8 border-t border-gray-200 dark:border-gray-700">
+                  <button
+                    onClick={handleContinue}
+                    className="w-full py-4 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 dark:from-blue-500 dark:to-blue-600 dark:hover:from-blue-600 dark:hover:to-blue-700 text-white font-semibold rounded-xl shadow-lg transition-all duration-200"
+                  >
+                    Continue to Document Upload
+                  </button>
+                </div>
               </div>
             </div>
           </div>
 
-          {/* User Info */}
-          <div className="p-6 border-b border-gray-100 dark:border-gray-700">
-            <div className="flex items-center space-x-4">
-              <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-xl flex items-center justify-center">
-                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                </svg>
+          {/* Right Panel - Progress & Info */}
+          <div className="lg:w-1/3">
+            <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg dark:shadow-gray-900/30 p-6 sticky top-8 transition-colors duration-200">
+              {/* Progress Section */}
+              <div className="mb-8">
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Application Progress</h3>
+                <div className="space-y-4">
+                  <div>
+                    <div className="flex justify-between mb-1">
+                      <span className="text-sm font-medium text-blue-600 dark:text-blue-400">Step 1: Personal Details</span>
+                      <span className="text-sm font-medium text-blue-600 dark:text-blue-400">50%</span>
+                    </div>
+                    <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                      <div className="bg-blue-600 dark:bg-blue-500 h-2 rounded-full transition-all duration-300" style={{ width: '50%' }}></div>
+                    </div>
+                  </div>
+                  <div>
+                    <div className="flex justify-between mb-1">
+                      <span className="text-sm font-medium text-gray-500 dark:text-gray-400">Step 2: Documents</span>
+                      <span className="text-sm font-medium text-gray-500 dark:text-gray-400">0%</span>
+                    </div>
+                    <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                      <div className="bg-gray-300 dark:bg-gray-600 h-2 rounded-full transition-all duration-300" style={{ width: '0%' }}></div>
+                    </div>
+                  </div>
+                  {/* Review section removed */}
+                </div>
               </div>
+
+              {/* Signature Progress */}
+              <div className="mb-8">
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Signatures</h3>
+                <div className="bg-gray-50 dark:bg-gray-900/50 rounded-lg p-4 transition-colors duration-200">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-sm text-gray-600 dark:text-gray-300">Sign 1 of 2</span>
+                    <span className="text-sm font-medium text-green-600 dark:text-green-400">Complete</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-gray-600 dark:text-gray-300">Sign 2 of 2</span>
+                    <span className="text-sm font-medium text-gray-400 dark:text-gray-500">Pending</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Quick Tips */}
               <div>
-                <h3 className="font-semibold text-gray-900 dark:text-white">{user.name}</h3>
-                <p className="text-sm text-gray-600 dark:text-gray-400">ID: {user.id}</p>
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Tips for Approval</h3>
+                <ul className="space-y-3">
+                  <li className="flex items-start">
+                    <div className="flex-shrink-0 w-2 h-2 bg-blue-500 dark:bg-blue-400 rounded-full mt-2 mr-3"></div>
+                    <span className="text-sm text-gray-600 dark:text-gray-300">Ensure PAN details match your documents</span>
+                  </li>
+                  <li className="flex items-start">
+                    <div className="flex-shrink-0 w-2 h-2 bg-blue-500 dark:bg-blue-400 rounded-full mt-2 mr-3"></div>
+                    <span className="text-sm text-gray-600 dark:text-gray-300">Provide accurate salary information</span>
+                  </li>
+                  <li className="flex items-start">
+                    <div className="flex-shrink-0 w-2 h-2 bg-blue-500 dark:bg-blue-400 rounded-full mt-2 mr-3"></div>
+                    <span className="text-sm text-gray-600 dark:text-gray-300">Keep required documents ready for next step</span>
+                  </li>
+                </ul>
+              </div>
+
+              {/* Dark/Light Mode Info */}
+              <div className="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700">
+                <div className="flex items-center text-sm text-gray-500 dark:text-gray-400">
+                  <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  <span>Switch theme in your browser settings</span>
+                </div>
               </div>
             </div>
           </div>
-
-          {/* Form */}
-          <div className="p-8 space-y-6">
-            {/* Row 1 */}
-            <div className="grid md:grid-cols-2 gap-6">
-              <Input
-                label="PAN Number"
-                placeholder="ABCDE1234F"
-                icon={
-                  <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                  </svg>
-                }
-                value={panNumber}
-                onChange={(e) => setPanNumber(e.target.value.toUpperCase())}
-              />
-
-              <Input
-                label="Monthly Salary"
-                type="number"
-                placeholder="₹50,000"
-                icon={
-                  <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                }
-                value={salary}
-                onChange={(e) => setSalary(e.target.value)}
-              />
-            </div>
-
-            {/* Row 2 */}
-            <div className="grid md:grid-cols-2 gap-6">
-              <Input
-                label="Loan Amount"
-                type="number"
-                placeholder="₹5,00,000"
-                icon={
-                  <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                  </svg>
-                }
-                value={requestedAmount}
-                onChange={(e) => setRequestedAmount(e.target.value)}
-              />
-
-              <Select
-                label="Marital Status"
-                icon={
-                  <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                  </svg>
-                }
-                value={maritalStatus}
-                onChange={(e) => setMaritalStatus(e.target.value)}
-              >
-                <option>Single</option>
-                <option>Married</option>
-              </Select>
-            </div>
-
-            {/* Row 3 */}
-            <div className="grid md:grid-cols-3 gap-6">
-              <Select
-                label="Nationality"
-                icon={
-                  <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                }
-                value={nationality}
-                onChange={(e) => setNationality(e.target.value)}
-              >
-                <option>Indian</option>
-                <option>Other</option>
-              </Select>
-
-              <Input
-                label="Age"
-                type="number"
-                placeholder="28"
-                icon={
-                  <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                  </svg>
-                }
-                value={age}
-                onChange={(e) => setAge(e.target.value)}
-              />
-
-              <Input
-                label="Dependents"
-                type="number"
-                placeholder="2"
-                icon={
-                  <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5 2.5v-1.5a2.5 2.5 0 00-5 0v1.5" />
-                  </svg>
-                }
-                value={dependents}
-                onChange={(e) => setDependents(e.target.value)}
-              />
-            </div>
-
-            {/* Row 4 - Phone Number Field */}
-            <div className="grid md:grid-cols-2 gap-6">
-              <Input
-                label="Phone Number"
-                type="tel"
-                placeholder="+91 9876543210"
-                icon={
-                  <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                  </svg>
-                }
-                value={phoneNumber}
-                onChange={(e) => setPhoneNumber(e.target.value)}
-              />
-              <div></div> {/* Empty div to maintain grid layout */}
-            </div>
-          </div>
-
-          {/* Footer */}
-          <div className="px-8 pb-8 pt-6 bg-gray-50/50 dark:bg-gray-900/50 border-t border-gray-100 dark:border-gray-700">
-            <button
-              onClick={handleContinue}
-              className="w-full py-4 px-6 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200 flex items-center justify-center space-x-2"
-            >
-              <span>Continue to Document Upload</span>
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-              </svg>
-            </button>
-            <p className="text-center text-sm text-gray-500 dark:text-gray-400 mt-4">
-              All information is securely encrypted and protected
-            </p>
-          </div>
         </div>
 
-        {/* Help Text */}
-        <div className="mt-6 text-center">
-          <p className="text-sm text-gray-600 dark:text-gray-400">
-            Need help? Contact our support team at{" "}
-            <a href="mailto:support@bank.com" className="text-blue-600 dark:text-blue-400 hover:underline">
-              support@bank.com
-            </a>
+        {/* Footer */}
+        <div className="mt-8 text-center">
+          <p className="text-sm text-gray-500 dark:text-gray-400">
+            <svg className="w-4 h-4 inline-block mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+            </svg>
+            Your information is secured with bank-grade encryption
           </p>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-/* ================= INPUT COMPONENT ================= */
-function Input({ label, icon, ...props }) {
-  return (
-    <div>
-      <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
-        {label}
-      </label>
-      <div className="relative">
-        {icon && (
-          <div className="absolute left-4 top-1/2 transform -translate-y-1/2">
-            {icon}
-          </div>
-        )}
-        <input
-          {...props}
-          className={`w-full py-3 ${icon ? 'pl-12' : 'pl-4'} pr-4 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 hover:border-gray-300 dark:hover:border-gray-600`}
-        />
-      </div>
-    </div>
-  );
-}
-
-/* ================= SELECT COMPONENT ================= */
-function Select({ label, icon, children, ...props }) {
-  return (
-    <div>
-      <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
-        {label}
-      </label>
-      <div className="relative">
-        {icon && (
-          <div className="absolute left-4 top-1/2 transform -translate-y-1/2">
-            {icon}
-          </div>
-        )}
-        <select
-          {...props}
-          className={`w-full py-3 ${icon ? 'pl-12' : 'pl-4'} pr-10 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 hover:border-gray-300 dark:hover:border-gray-600 appearance-none`}
-        >
-          {children}
-        </select>
-        <div className="absolute right-4 top-1/2 transform -translate-y-1/2 pointer-events-none">
-          <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-          </svg>
         </div>
       </div>
     </div>

@@ -52,6 +52,7 @@ exports.applyLoan = async (req, res) => {
       panNumber,
       salary,
       requestedAmount,
+      loanPurpose, // ✅ NEW
       maritalStatus = "Single",
       age = 25,
       dependents = 0,
@@ -66,6 +67,7 @@ exports.applyLoan = async (req, res) => {
       !panNumber ||
       !salary ||
       !requestedAmount ||
+      !loanPurpose || // ✅ REQUIRED
       !phoneNumber ||
       !userName ||
       !userEmail
@@ -115,19 +117,20 @@ exports.applyLoan = async (req, res) => {
     }
 
     // ---------------- CREDIT SCORE ----------------
-    const creditScore = calculateCreditScore(
+    // NEW: Get full credit result with breakdown
+    const creditResult = calculateCreditScore(
       {
         requestedAmount: numericRequestedAmount,
         salary: numericSalary,
         maritalStatus,
         age: Number(age),
         dependents: Number(dependents),
+        loanPurpose,
       },
       user
     );
 
-    const systemDecision =
-      creditScore >= 500 ? "Pre-Approved" : "Pre-Rejected";
+    const systemDecision = creditResult.decision; // "Pre-Approved" or "Rejected"
 
     // ---------------- SAVE LOAN ----------------
     const loan = new Loan({
@@ -139,11 +142,12 @@ exports.applyLoan = async (req, res) => {
       panNumber: panNumber.toUpperCase(),
       salary: numericSalary,
       requestedAmount: numericRequestedAmount,
+      loanPurpose,
       maritalStatus,
       age: Number(age),
       dependents: Number(dependents),
 
-      creditScore,
+      creditScore: creditResult.score, // Save just the number
       approvalStatus: systemDecision,
       adminFinalStatus: "Pending",
 
@@ -155,11 +159,14 @@ exports.applyLoan = async (req, res) => {
 
     await loan.save();
 
+    // ---------------- SEND RESPONSE ----------------
     return res.json({
       success: true,
       message: "Loan application submitted.",
-      creditScore,
-      systemDecision,
+      creditScore: creditResult.score, // Total score
+      creditRating: creditResult.rating, // "Excellent", "Good", etc.
+      systemDecision: creditResult.decision, // "Pre-Approved" or "Rejected"
+      scoreBreakdown: creditResult.breakdown, // NEW: Send breakdown to frontend
       loanId: loan._id,
     });
   } catch (err) {

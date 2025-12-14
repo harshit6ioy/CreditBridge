@@ -44,6 +44,13 @@ const loanSchema = new mongoose.Schema(
       required: true,
     },
 
+    // ✅ NEW FIELD (IMPORTANT)
+    loanPurpose: {
+      type: String,
+      enum: ["Education", "Medical", "Home", "Business", "Personal"],
+      required: true,
+    },
+
     maritalStatus: {
       type: String,
       enum: ["Single", "Married"],

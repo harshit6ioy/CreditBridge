@@ -52,7 +52,7 @@ exports.applyLoan = async (req, res) => {
       panNumber,
       salary,
       requestedAmount,
-      loanPurpose, // ✅ NEW
+      loanPurpose, // 
       maritalStatus = "Single",
       age = 25,
       dependents = 0,
@@ -67,7 +67,7 @@ exports.applyLoan = async (req, res) => {
       !panNumber ||
       !salary ||
       !requestedAmount ||
-      !loanPurpose || // ✅ REQUIRED
+      !loanPurpose ||  
       !phoneNumber ||
       !userName ||
       !userEmail

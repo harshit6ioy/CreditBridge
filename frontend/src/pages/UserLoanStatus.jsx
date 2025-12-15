@@ -30,8 +30,8 @@ export default function UserLoanStatus() {
 
   const getStatusColor = (status) => {
     switch(status) {
-      case "Approved": return "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400";
-      case "Rejected": return "bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400";
+      case "Pre-Approved": return "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400";
+      case "Rejected": return "bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400"; // Changed from "Pre-Rejected"
       case "Pending": return "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400";
       default: return "bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300";
     }
@@ -222,7 +222,7 @@ export default function UserLoanStatus() {
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
                               </svg>
                             )}
-                            {loan.approvalStatus === "Pre-Rejected" && (
+                            {loan.approvalStatus === "Rejected" && ( // CHANGED FROM "Pre-Rejected"
                               <svg className="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
                               </svg>
@@ -448,7 +448,8 @@ export default function UserLoanStatus() {
                   <span className="text-gray-600 dark:text-gray-300">System Decision:</span>
                   <span className={`font-bold ${
                     selectedLoan.approvalStatus === "Pre-Approved" ? "text-green-600 dark:text-green-400" :
-                    "text-red-600 dark:text-red-400"
+                    selectedLoan.approvalStatus === "Rejected" ? "text-red-600 dark:text-red-400" : // Added specific check
+                    "text-yellow-600 dark:text-yellow-400"
                   }`}>
                     {selectedLoan.approvalStatus}
                   </span>
@@ -483,7 +484,7 @@ export default function UserLoanStatus() {
                               <div className="font-medium text-gray-900 dark:text-white">{factor.name}</div>
                               <div className="text-sm text-gray-500 dark:text-gray-400">{factor.reason}</div>
                             </div>
-                            <div className={`font-bold ${factor.score > 0 ? 'text-green-600' : 'text-red-600'}`}>
+                            <div className={`font-bold ${factor.score > 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>
                               {factor.score > 0 ? '+' : ''}{factor.score}
                             </div>
                           </div>

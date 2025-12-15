@@ -9,14 +9,16 @@ export default function UserLandingPage() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [bankId, setBankId] = useState("");
+  const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async () => {
     const cleanName = name.trim();
     const cleanEmail = email.trim();
     const cleanBankId = bankId.trim();
+    const cleanPassword = password.trim();
 
-    if (!cleanName || !cleanEmail || !cleanBankId) {
+    if (!cleanName || !cleanEmail || !cleanBankId || !cleanPassword) {
       alert("All fields are required.");
       return;
     }
@@ -28,6 +30,7 @@ export default function UserLandingPage() {
         name: cleanName,
         email: cleanEmail,
         bankId: cleanBankId,
+        password: cleanPassword,
       });
 
       console.log("Verified User:", res.data);
@@ -104,6 +107,17 @@ export default function UserLandingPage() {
             focus:ring-2 focus:ring-blue-500 outline-none"
             value={bankId}
             onChange={(e) => setBankId(e.target.value.replace(/^\s+/, ""))}
+          />
+
+          {/* Password Field - ADDED */}
+          <input
+            type="password"
+            placeholder="Password"
+            className="w-full p-3 rounded-lg bg-white/60 dark:bg-gray-800/70 
+            text-gray-900 dark:text-white font-bold border border-gray-300 dark:border-gray-700
+            focus:ring-2 focus:ring-blue-500 outline-none"
+            value={password}
+            onChange={(e) => setPassword(e.target.value.replace(/^\s+/, ""))}
           />
 
           {/* Submit Button */}

@@ -21,16 +21,27 @@ export default function ApplyLoanPage1() {
   const [dependents, setDependents] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
 
-  /* ================= LOAD VERIFIED USER ================= */
+  /* ================= LOAD VERIFIED USER & AUTO-FILL ================= */
   useEffect(() => {
     try {
       const storedUser = JSON.parse(localStorage.getItem("verifiedUser"));
       if (!storedUser || !storedUser.id) {
-        alert("Please verify user first.");
+        alert("Please login first.");
         navigate("/user");
         return;
       }
       setUser(storedUser);
+      
+      // AUTO-FILL USER DATA FROM LOGIN
+      if (storedUser.pan) {
+        setPanNumber(storedUser.pan);
+      }
+      if (storedUser.salary) {
+        setSalary(storedUser.salary.toString());
+      }
+      if (storedUser.age) {
+        setAge(storedUser.age.toString());
+      }
     } catch {
       navigate("/user");
     } finally {
@@ -85,6 +96,13 @@ export default function ApplyLoanPage1() {
     navigate("/apply-loan-documents");
   };
 
+  /* ================= LOGOUT FUNCTION ================= */
+  const handleLogout = () => {
+    localStorage.removeItem("verifiedUser");
+    localStorage.removeItem("loanStep1Data");
+    navigate("/user");
+  };
+
   /* ================= UI ================= */
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 p-4 md:p-8 transition-colors duration-200">
@@ -108,21 +126,29 @@ export default function ApplyLoanPage1() {
                   <h2 className="text-xl font-semibold text-gray-900 dark:text-white">2.1.1 Loan Summary</h2>
                   <div className="flex items-center space-x-2">
                     <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                    <span className="text-sm text-green-600 dark:text-green-400 font-medium">User Verified</span>
+                    <span className="text-sm text-green-600 dark:text-green-400 font-medium">Logged In</span> {/* Updated text */}
                   </div>
                 </div>
               </div>
 
-              {/* User Info */}
+              {/* User Info with Logout */}
               <div className="px-8 py-6 bg-blue-50 dark:bg-blue-900/20 border-b border-gray-200 dark:border-gray-700">
                 <div className="flex items-center justify-between">
                   <div>
                     <h3 className="text-lg font-bold text-gray-900 dark:text-white">{user?.name || "Annan Kumar"}</h3>
-                    <p className="text-gray-600 dark:text-gray-300">ID: {user?.id || "101"}</p>
+                    <p className="text-gray-600 dark:text-gray-300">Bank ID: {user?.id || "101"}</p>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">PAN: {user?.pan || "Not available"}</p>
                   </div>
                   <div className="text-right">
                     <div className="text-sm text-gray-500 dark:text-gray-400">Progress</div>
                     <div className="text-lg font-bold text-blue-600 dark:text-blue-400">50% Complete</div>
+                    {/* Logout Button */}
+                    <button
+                      onClick={handleLogout}
+                      className="mt-2 text-sm text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-300 transition-colors duration-200"
+                    >
+                      Logout
+                    </button>
                   </div>
                 </div>
               </div>
@@ -134,7 +160,7 @@ export default function ApplyLoanPage1() {
                   <div className="grid md:grid-cols-2 gap-6">
                     <div>
                       <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
-                        PAN Number
+                        PAN Number <span className="text-green-600 dark:text-green-400 text-xs">(Auto-filled)</span>
                       </label>
                       <input
                         type="text"
@@ -143,10 +169,15 @@ export default function ApplyLoanPage1() {
                         className="w-full px-4 py-3 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 transition-colors duration-200 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
                         placeholder="ABCDE1234F"
                       />
+                      {user?.pan && panNumber === user.pan && (
+                        <p className="text-xs text-green-600 dark:text-green-400 mt-1">
+                          ✓ Auto-filled from your bank records
+                        </p>
+                      )}
                     </div>
                     <div>
                       <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
-                        Monthly Salary
+                        Monthly Salary <span className="text-green-600 dark:text-green-400 text-xs">(Auto-filled)</span>
                       </label>
                       <div className="relative">
                         <span className="absolute left-3 top-3 text-gray-500 dark:text-gray-400">₹</span>
@@ -158,6 +189,11 @@ export default function ApplyLoanPage1() {
                           placeholder="50,000"
                         />
                       </div>
+                      {user?.salary && Number(salary) === user.salary && (
+                        <p className="text-xs text-green-600 dark:text-green-400 mt-1">
+                          ✓ Auto-filled from your bank records
+                        </p>
+                      )}
                     </div>
                   </div>
 
@@ -210,7 +246,7 @@ export default function ApplyLoanPage1() {
                     </div>
                     <div>
                       <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
-                        Age
+                        Age <span className="text-green-600 dark:text-green-400 text-xs">(Auto-filled)</span>
                       </label>
                       <input
                         type="number"
@@ -219,6 +255,11 @@ export default function ApplyLoanPage1() {
                         className="w-full px-4 py-3 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 transition-colors duration-200 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
                         placeholder="28"
                       />
+                      {user?.age && Number(age) === user.age && (
+                        <p className="text-xs text-green-600 dark:text-green-400 mt-1">
+                          ✓ Auto-filled from your bank records
+                        </p>
+                      )}
                     </div>
                     <div>
                       <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
@@ -259,12 +300,15 @@ export default function ApplyLoanPage1() {
                       className="w-full px-4 py-3 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 transition-colors duration-200 text-gray-900 dark:text-white"
                     >
                       <option value="">Select Loan Purpose</option>
-                      <option value="Education">Education</option>
+                      <option value="Education">Education (Recommended for best approval)</option>
                       <option value="Medical">Medical</option>
                       <option value="Home">Home</option>
                       <option value="Business">Business</option>
                       <option value="Personal">Personal</option>
                     </select>
+                    <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                      Tip: Education loans have highest approval rates
+                    </p>
                   </div>
                 </div>
 
@@ -306,23 +350,34 @@ export default function ApplyLoanPage1() {
                       <div className="bg-gray-300 dark:bg-gray-600 h-2 rounded-full transition-all duration-300" style={{ width: '0%' }}></div>
                     </div>
                   </div>
-                  {/* Review section removed */}
                 </div>
               </div>
 
-              {/* Signature Progress */}
-              <div className="mb-8">
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Signatures</h3>
-                <div className="bg-gray-50 dark:bg-gray-900/50 rounded-lg p-4 transition-colors duration-200">
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-sm text-gray-600 dark:text-gray-300">Sign 1 of 2</span>
-                    <span className="text-sm font-medium text-green-600 dark:text-green-400">Complete</span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm text-gray-600 dark:text-gray-300">Sign 2 of 2</span>
-                    <span className="text-sm font-medium text-gray-400 dark:text-gray-500">Pending</span>
-                  </div>
-                </div>
+              {/* Auto-filled Info */}
+              <div className="mb-8 bg-green-50 dark:bg-green-900/20 rounded-lg p-4">
+                <h4 className="font-semibold text-green-700 dark:text-green-400 mb-2 flex items-center">
+                  <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+                  </svg>
+                  Auto-filled Fields
+                </h4>
+                <ul className="text-sm text-green-600 dark:text-green-400 space-y-1">
+                  <li className="flex items-center">
+                    <div className="w-1.5 h-1.5 bg-green-500 rounded-full mr-2"></div>
+                    PAN Number
+                  </li>
+                  <li className="flex items-center">
+                    <div className="w-1.5 h-1.5 bg-green-500 rounded-full mr-2"></div>
+                    Monthly Salary
+                  </li>
+                  <li className="flex items-center">
+                    <div className="w-1.5 h-1.5 bg-green-500 rounded-full mr-2"></div>
+                    Age
+                  </li>
+                </ul>
+                <p className="text-xs text-green-600 dark:text-green-400 mt-2">
+                  These fields are pre-filled from your bank records. You can edit if needed.
+                </p>
               </div>
 
               {/* Quick Tips */}
@@ -331,27 +386,17 @@ export default function ApplyLoanPage1() {
                 <ul className="space-y-3">
                   <li className="flex items-start">
                     <div className="flex-shrink-0 w-2 h-2 bg-blue-500 dark:bg-blue-400 rounded-full mt-2 mr-3"></div>
-                    <span className="text-sm text-gray-600 dark:text-gray-300">Ensure PAN details match your documents</span>
+                    <span className="text-sm text-gray-600 dark:text-gray-300">Keep loan amount under 3x your salary</span>
                   </li>
                   <li className="flex items-start">
                     <div className="flex-shrink-0 w-2 h-2 bg-blue-500 dark:bg-blue-400 rounded-full mt-2 mr-3"></div>
-                    <span className="text-sm text-gray-600 dark:text-gray-300">Provide accurate salary information</span>
+                    <span className="text-sm text-gray-600 dark:text-gray-300">Education loans get best credit scores</span>
                   </li>
                   <li className="flex items-start">
                     <div className="flex-shrink-0 w-2 h-2 bg-blue-500 dark:bg-blue-400 rounded-full mt-2 mr-3"></div>
-                    <span className="text-sm text-gray-600 dark:text-gray-300">Keep required documents ready for next step</span>
+                    <span className="text-sm text-gray-600 dark:text-gray-300">Have PAN and salary slip ready for next step</span>
                   </li>
                 </ul>
-              </div>
-
-              {/* Dark/Light Mode Info */}
-              <div className="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700">
-                <div className="flex items-center text-sm text-gray-500 dark:text-gray-400">
-                  <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                  <span>Switch theme in your browser settings</span>
-                </div>
               </div>
             </div>
           </div>

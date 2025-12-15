@@ -81,10 +81,14 @@ export default function ApplyLoanPage2() {
       form.append("age", loanDetails.age);
       form.append("dependents", loanDetails.dependents);
 
+      console.log("Submitting form data..."); // DEBUG LOG
+
       const res = await api.post("/apply-loan", form, {
         headers: { "Content-Type": "multipart/form-data" },
       });
 
+      console.log("Server response:", res.data); // DEBUG LOG
+      
       localStorage.removeItem("loanStep1Data");
       
       // Save credit score data to localStorage for persistence
@@ -102,10 +106,18 @@ export default function ApplyLoanPage2() {
         scoreBreakdown: res.data.scoreBreakdown
       });
       
+      console.log("Setting modal with:", { // DEBUG LOG
+        systemDecision: res.data.systemDecision,
+        isApproved: res.data.systemDecision === "Pre-Approved",
+        creditScore: res.data.creditScore,
+        hasScoreBreakdown: !!res.data.scoreBreakdown
+      });
+      
       setIsApproved(res.data.systemDecision === "Pre-Approved");
       setShowModal(true);
     } catch (err) {
-      console.error(err);
+      console.error("Submission error:", err);
+      console.error("Error response:", err.response?.data); // DEBUG LOG
       alert(err.response?.data?.message || "Submission failed");
     }
 
@@ -118,6 +130,46 @@ export default function ApplyLoanPage2() {
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900 p-4 md:p-8 transition-colors duration-200">
         <EmiCalculatorButton />
         <ProfileIcon />
+
+        {/* Debug Button - Temporary */}
+        <button
+          onClick={() => {
+            console.log("Current state:", {
+              showModal,
+              isApproved,
+              creditScoreData,
+              loanDetails,
+              panFile: !!panFile,
+              salarySlip: !!salarySlip
+            });
+          }}
+          className="fixed bottom-4 right-4 bg-gray-800 text-white p-2 rounded text-xs z-50"
+        >
+          Debug State
+        </button>
+
+        {/* Test Modal Button - Temporary */}
+        <button
+          onClick={() => {
+            // Test modal with rejected state
+            setCreditScoreData({
+              creditScore: 350,
+              rating: "Poor",
+              scoreBreakdown: {
+                baseScore: 300,
+                factors: [
+                  { name: "Loan vs Salary", score: -100, reason: "Loan amount too high" },
+                  { name: "Existing Loans", score: -50, reason: "You have existing loans" }
+                ]
+              }
+            });
+            setIsApproved(false);
+            setShowModal(true);
+          }}
+          className="fixed bottom-16 right-4 bg-red-600 text-white p-2 rounded text-xs z-50"
+        >
+          Test Rejected Modal
+        </button>
 
         <div className="max-w-4xl mx-auto">
           {/* Header */}
@@ -495,8 +547,8 @@ export default function ApplyLoanPage2() {
                 </div>
               )}
               
-              {/* Show different message if rejected */}
-              {!isApproved && creditScoreData && (
+              {/* Show message if rejected */}
+              {!isApproved && (
                 <div className="mb-8 bg-gradient-to-r from-red-50 to-orange-50 dark:from-gray-900 dark:to-gray-800 p-6 rounded-xl">
                   <div className="flex items-center mb-4">
                     <div className="w-12 h-12 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center mr-4">
@@ -505,41 +557,60 @@ export default function ApplyLoanPage2() {
                       </svg>
                     </div>
                     <div>
-                      <h3 className="text-xl font-bold text-gray-900 dark:text-white">Why Was My Application Rejected?</h3>
-                      <p className="text-gray-600 dark:text-gray-300">Your credit score was below the required threshold</p>
+                      <h3 className="text-xl font-bold text-gray-900 dark:text-white">Application Not Approved</h3>
+                      <p className="text-gray-600 dark:text-gray-300">
+                        {creditScoreData 
+                          ? "Your credit score was below the required threshold"
+                          : "Your application did not meet the approval criteria"}
+                      </p>
                     </div>
                   </div>
                   
-                  <div className="bg-white dark:bg-gray-700 p-4 rounded-lg">
-                    <div className="flex justify-between items-center mb-3">
-                      <span className="text-gray-700 dark:text-gray-300">Your Credit Score:</span>
-                      <span className="text-2xl font-bold text-red-600 dark:text-red-400">{creditScoreData.creditScore}</span>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <span className="text-gray-700 dark:text-gray-300">Required Score:</span>
-                      <span className="text-lg font-bold text-green-600 dark:text-green-400">500+</span>
-                    </div>
-                  </div>
-                  
-                  {/* Show key negative factors */}
-                  {creditScoreData.scoreBreakdown && (
-                    <div className="mt-6">
-                      <h4 className="font-bold text-gray-900 dark:text-white mb-3">Areas to Improve:</h4>
-                      <div className="space-y-2">
-                        {creditScoreData.scoreBreakdown.factors
-                          .filter(factor => factor.score < 0)
-                          .map((factor, index) => (
-                            <div key={index} className="flex items-center p-3 bg-red-50 dark:bg-red-900/20 rounded-lg">
-                              <svg className="w-5 h-5 text-red-500 dark:text-red-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
-                              </svg>
-                              <div>
-                                <div className="font-medium text-gray-900 dark:text-white">{factor.name}</div>
-                                <div className="text-sm text-gray-600 dark:text-gray-300">{factor.reason}</div>
-                              </div>
-                            </div>
-                          ))}
+                  {/* Show credit score if available */}
+                  {creditScoreData && (
+                    <>
+                      <div className="bg-white dark:bg-gray-700 p-4 rounded-lg mb-4">
+                        <div className="flex justify-between items-center mb-3">
+                          <span className="text-gray-700 dark:text-gray-300">Your Credit Score:</span>
+                          <span className="text-2xl font-bold text-red-600 dark:text-red-400">{creditScoreData.creditScore}</span>
+                        </div>
+                        <div className="flex justify-between items-center">
+                          <span className="text-gray-700 dark:text-gray-300">Required Score:</span>
+                          <span className="text-lg font-bold text-green-600 dark:text-green-400">500+</span>
+                        </div>
                       </div>
+                      
+                      {/* Show key negative factors */}
+                      {creditScoreData.scoreBreakdown && (
+                        <div className="mt-6">
+                          <h4 className="font-bold text-gray-900 dark:text-white mb-3">Areas to Improve:</h4>
+                          <div className="space-y-2">
+                            {creditScoreData.scoreBreakdown.factors
+                              .filter(factor => factor.score < 0)
+                              .map((factor, index) => (
+                                <div key={index} className="flex items-center p-3 bg-red-50 dark:bg-red-900/20 rounded-lg">
+                                  <svg className="w-5 h-5 text-red-500 dark:text-red-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                                  </svg>
+                                  <div>
+                                    <div className="font-medium text-gray-900 dark:text-white">{factor.name}</div>
+                                    <div className="text-sm text-gray-600 dark:text-gray-300">{factor.reason}</div>
+                                  </div>
+                                </div>
+                              ))}
+                          </div>
+                        </div>
+                      )}
+                    </>
+                  )}
+                  
+                  {/* Show generic message if no creditScoreData */}
+                  {!creditScoreData && (
+                    <div className="bg-white dark:bg-gray-700 p-4 rounded-lg">
+                      <p className="text-gray-700 dark:text-gray-300">
+                        The system could not approve your application based on the provided information.
+                        You may try again with updated details or contact support for more information.
+                      </p>
                     </div>
                   )}
                 </div>

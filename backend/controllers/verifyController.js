@@ -130,7 +130,25 @@ exports.applyLoan = async (req, res) => {
       user
     );
 
+    // DEBUG LOG
+    console.log("Credit Result:", {
+      score: creditResult.score,
+      rating: creditResult.rating,
+      decision: creditResult.decision,
+      hasBreakdown: !!creditResult.breakdown,
+    });
+
     const systemDecision = creditResult.decision; // "Pre-Approved" or "Rejected"
+
+    // Validate decision matches model enum
+    const validDecisions = ["Pre-Approved", "Rejected"];
+    if (!validDecisions.includes(systemDecision)) {
+      console.error(`Invalid decision from creditscore: ${systemDecision}`);
+      return res.status(500).json({
+        success: false,
+        message: "System error: Invalid decision format.",
+      });
+    }
 
     // ---------------- SAVE LOAN ----------------
     const loan = new Loan({
@@ -158,6 +176,13 @@ exports.applyLoan = async (req, res) => {
     });
 
     await loan.save();
+    
+    // DEBUG LOG after save
+    console.log("Loan saved successfully:", {
+      id: loan._id,
+      approvalStatus: loan.approvalStatus,
+      creditScore: loan.creditScore,
+    });
 
     // ---------------- SEND RESPONSE ----------------
     return res.json({
@@ -171,6 +196,16 @@ exports.applyLoan = async (req, res) => {
     });
   } catch (err) {
     console.error("APPLY LOAN ERROR →", err);
+    
+    // Check if it's a Mongoose validation error
+    if (err.name === 'ValidationError') {
+      return res.status(400).json({
+        success: false,
+        message: `Validation error: ${err.message}`,
+        details: err.errors
+      });
+    }
+    
     return res.status(500).json({
       success: false,
       message: "Server Error.",

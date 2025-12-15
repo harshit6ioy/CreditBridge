@@ -1,0 +1,11 @@
+# Environment variables
+.env
+
+# Uploads (user documents)
+uploads/
+
+# Mock / test data
+mockData.json
+
+# Dependencies
+node_modules/

@@ -44,7 +44,6 @@ const loanSchema = new mongoose.Schema(
       required: true,
     },
 
-    //  NEW FIELD (IMPORTANT)
     loanPurpose: {
       type: String,
       enum: ["Education", "Medical", "Home", "Business", "Personal"],
@@ -75,7 +74,7 @@ const loanSchema = new mongoose.Schema(
     // ================= SYSTEM DECISIONS =================
     approvalStatus: {
       type: String,
-      enum: ["Pre-Approved", "Pre-Rejected"],
+      enum: ["Pre-Approved", "Rejected"],  // CHANGED: "Pre-Rejected" → "Rejected"
       required: true,
     },
 

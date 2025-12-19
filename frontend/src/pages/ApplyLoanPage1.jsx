@@ -6,11 +6,11 @@ import EmiCalculatorButton from "../components/EmiCalculatorButton";
 export default function ApplyLoanPage1() {
   const navigate = useNavigate();
 
-  /* ================= USER STATE ================= */
+  
   const [user, setUser] = useState(null);
   const [loadingUser, setLoadingUser] = useState(true);
 
-  /* ================= FORM STATE ================= */
+  
   const [panNumber, setPanNumber] = useState("");
   const [salary, setSalary] = useState("");
   const [requestedAmount, setRequestedAmount] = useState("");
@@ -21,7 +21,7 @@ export default function ApplyLoanPage1() {
   const [dependents, setDependents] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
 
-  /* ================= LOAD VERIFIED USER - ONLY BASIC INFO ================= */
+  
   useEffect(() => {
     try {
       const storedUser = JSON.parse(localStorage.getItem("verifiedUser"));
@@ -31,15 +31,14 @@ export default function ApplyLoanPage1() {
         return;
       }
       
-      // Only set basic user info - name, email, bank ID
+      
       setUser({
         id: storedUser.id,
         name: storedUser.name,
         email: storedUser.email
       });
       
-      // NO AUTO-FILL for PAN, salary, age, etc.
-      // User must enter these details manually
+      
       
     } catch {
       navigate("/user");
@@ -59,7 +58,7 @@ export default function ApplyLoanPage1() {
     );
   }
 
-  /* ================= SUBMIT ================= */
+  
   const handleContinue = () => {
     if (
       !panNumber ||
@@ -95,28 +94,27 @@ export default function ApplyLoanPage1() {
     navigate("/apply-loan-documents");
   };
 
-  /* ================= LOGOUT FUNCTION ================= */
   const handleLogout = () => {
     localStorage.removeItem("verifiedUser");
     localStorage.removeItem("loanStep1Data");
     navigate("/user");
   };
 
-  /* ================= UI ================= */
+  
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 p-4 md:p-8 transition-colors duration-200">
       <EmiCalculatorButton />
       <ProfileIcon />
 
       <div className="max-w-4xl mx-auto">
-        {/* Header */}
+       
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Loan Application</h1>
           <p className="text-gray-600 dark:text-gray-300 mt-2">Complete your personal and financial details</p>
         </div>
 
         <div className="flex flex-col lg:flex-row gap-8">
-          {/* Left Panel - Form */}
+        
           <div className="lg:w-2/3">
             <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg dark:shadow-gray-900/30 overflow-hidden transition-colors duration-200">
               {/* Form Header */}
@@ -130,7 +128,7 @@ export default function ApplyLoanPage1() {
                 </div>
               </div>
 
-              {/* User Info with Logout */}
+             
               <div className="px-8 py-6 bg-blue-50 dark:bg-blue-900/20 border-b border-gray-200 dark:border-gray-700">
                 <div className="flex items-center justify-between">
                   <div>
@@ -152,7 +150,7 @@ export default function ApplyLoanPage1() {
                 </div>
               </div>
 
-              {/* Form Content */}
+             
               <div className="p-8">
                 <div className="space-y-8">
                   {/* Row 1 - Financial Details */}
@@ -192,7 +190,7 @@ export default function ApplyLoanPage1() {
                     </div>
                   </div>
 
-                  {/* Row 2 - Loan Details */}
+                 
                   <div className="grid md:grid-cols-2 gap-6">
                     <div>
                       <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
@@ -226,7 +224,7 @@ export default function ApplyLoanPage1() {
                     </div>
                   </div>
 
-                  {/* Row 3 - Personal Details */}
+                 
                   <div className="grid md:grid-cols-3 gap-6">
                     <div>
                       <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
@@ -270,7 +268,7 @@ export default function ApplyLoanPage1() {
                     </div>
                   </div>
 
-                  {/* Row 4 - Contact */}
+                 
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
                       Phone Number <span className="text-red-600">*</span>
@@ -284,7 +282,7 @@ export default function ApplyLoanPage1() {
                     />
                   </div>
 
-                  {/* Row 5 - Loan Purpose */}
+                 
                   <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
                     <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
                       Loan Purpose <span className="text-red-600">*</span>
@@ -309,7 +307,7 @@ export default function ApplyLoanPage1() {
                   </div>
                 </div>
 
-                {/* Submit Button */}
+                
                 <div className="mt-10 pt-8 border-t border-gray-200 dark:border-gray-700">
                   <button
                     onClick={handleContinue}
@@ -322,10 +320,10 @@ export default function ApplyLoanPage1() {
             </div>
           </div>
 
-          {/* Right Panel - Progress & Info */}
+         
           <div className="lg:w-1/3">
             <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg dark:shadow-gray-900/30 p-6 sticky top-8 transition-colors duration-200">
-              {/* Progress Section */}
+              
               <div className="mb-8">
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Application Progress</h3>
                 <div className="space-y-4">
@@ -359,9 +357,7 @@ export default function ApplyLoanPage1() {
                 </div>
               </div>
 
-              {/* Removed Auto-filled Info Section */}
-
-              {/* Quick Tips */}
+              
               <div>
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Tips for Approval</h3>
                 <ul className="space-y-3">
@@ -384,7 +380,7 @@ export default function ApplyLoanPage1() {
                 </ul>
               </div>
 
-              {/* Required Documents Preview */}
+             
               <div className="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700">
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">Documents Needed</h3>
                 <ul className="space-y-2 text-sm">

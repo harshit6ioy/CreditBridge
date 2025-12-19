@@ -2,9 +2,7 @@ const mockData = require("../mockData.json");
 const calculateCreditScore = require("../utils/creditScore");
 const Loan = require("../models/Loan");
 
-// ------------------------------------------------------
-// USER VERIFICATION (NO FILE UPLOAD HERE)
-// ------------------------------------------------------
+
 exports.verifyUser = (req, res) => {
   let { name, email, bankId } = req.body;
 
@@ -42,9 +40,7 @@ exports.verifyUser = (req, res) => {
   });
 };
 
-// ------------------------------------------------------
-// APPLY LOAN (REQUIRES FILE UPLOAD)
-// ------------------------------------------------------
+
 exports.applyLoan = async (req, res) => {
   try {
     let {
@@ -61,7 +57,7 @@ exports.applyLoan = async (req, res) => {
       userEmail,
     } = req.body;
 
-    // ---------------- BASIC VALIDATION ----------------
+    
     if (
       !bankId ||
       !panNumber ||
@@ -97,7 +93,7 @@ exports.applyLoan = async (req, res) => {
       });
     }
 
-    // ---------------- PAN CHECK ----------------
+    
     if (user.pan.toUpperCase() !== panNumber.toUpperCase()) {
       return res.status(400).json({
         success: false,
@@ -105,7 +101,7 @@ exports.applyLoan = async (req, res) => {
       });
     }
 
-    // ---------------- SALARY CHECK ----------------
+   
     const numericSalary = Number(salary);
     const numericRequestedAmount = Number(requestedAmount);
 
@@ -116,8 +112,7 @@ exports.applyLoan = async (req, res) => {
       });
     }
 
-    // ---------------- CREDIT SCORE ----------------
-    // NEW: Get full credit result with breakdown
+    
     const creditResult = calculateCreditScore(
       {
         requestedAmount: numericRequestedAmount,
@@ -130,7 +125,6 @@ exports.applyLoan = async (req, res) => {
       user
     );
 
-    // DEBUG LOG
     console.log("Credit Result:", {
       score: creditResult.score,
       rating: creditResult.rating,
@@ -140,7 +134,7 @@ exports.applyLoan = async (req, res) => {
 
     const systemDecision = creditResult.decision; // "Pre-Approved" or "Rejected"
 
-    // Validate decision matches model enum
+    
     const validDecisions = ["Pre-Approved", "Rejected"];
     if (!validDecisions.includes(systemDecision)) {
       console.error(`Invalid decision from creditscore: ${systemDecision}`);
@@ -150,7 +144,7 @@ exports.applyLoan = async (req, res) => {
       });
     }
 
-    // ---------------- SAVE LOAN ----------------
+    
     const loan = new Loan({
       bankId: Number(bankId),
       userName: userName.trim(),
@@ -177,21 +171,21 @@ exports.applyLoan = async (req, res) => {
 
     await loan.save();
     
-    // DEBUG LOG after save
+   
     console.log("Loan saved successfully:", {
       id: loan._id,
       approvalStatus: loan.approvalStatus,
       creditScore: loan.creditScore,
     });
 
-    // ---------------- SEND RESPONSE ----------------
+   
     return res.json({
       success: true,
       message: "Loan application submitted.",
-      creditScore: creditResult.score, // Total score
-      creditRating: creditResult.rating, // "Excellent", "Good", etc.
-      systemDecision: creditResult.decision, // "Pre-Approved" or "Rejected"
-      scoreBreakdown: creditResult.breakdown, // NEW: Send breakdown to frontend
+      creditScore: creditResult.score, 
+      creditRating: creditResult.rating, 
+      systemDecision: creditResult.decision, 
+      scoreBreakdown: creditResult.breakdown, 
       loanId: loan._id,
     });
   } catch (err) {
@@ -213,9 +207,7 @@ exports.applyLoan = async (req, res) => {
   }
 };
 
-// ------------------------------------------------------
-// USER LOANS
-// ------------------------------------------------------
+
 exports.getUserLoans = async (req, res) => {
   try {
     const { bankId } = req.params;
@@ -230,9 +222,7 @@ exports.getUserLoans = async (req, res) => {
   }
 };
 
-// ------------------------------------------------------
-// ADMIN FUNCTIONS
-// ------------------------------------------------------
+
 exports.adminUpdateLoan = async (req, res) => {
   const { decision } = req.body;
 

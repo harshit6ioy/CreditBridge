@@ -2,7 +2,7 @@ const multer = require("multer");
 const path = require("path");
 const fs = require("fs");
 
-// Ensure uploads folder exists
+
 const uploadDir = path.join(__dirname, "..", "uploads");
 if (!fs.existsSync(uploadDir)) {
   fs.mkdirSync(uploadDir, { recursive: true });
@@ -17,7 +17,7 @@ const storage = multer.diskStorage({
   }
 });
 
-// Allow only pdf, jpeg, jpg, png
+
 const fileFilter = (req, file, cb) => {
   const allowed = ["image/jpeg", "image/jpg", "image/png", "application/pdf"];
   if (allowed.includes(file.mimetype)) {

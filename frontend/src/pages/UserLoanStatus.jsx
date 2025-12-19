@@ -51,7 +51,7 @@ export default function UserLoanStatus() {
     setShowScoreModal(true);
   };
 
-  // Check if this loan has breakdown data in localStorage
+ 
   const getLatestBreakdown = () => {
     try {
       const latestData = localStorage.getItem("latestCreditScoreData");
@@ -92,7 +92,7 @@ export default function UserLoanStatus() {
         </div>
 
         <div className="flex flex-col lg:flex-row gap-8">
-          {/* Main Content */}
+          
           <div className="lg:w-2/3">
             <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg dark:shadow-gray-900/30 overflow-hidden transition-colors duration-200">
               {/* Table Header */}
@@ -113,7 +113,7 @@ export default function UserLoanStatus() {
                 </div>
               </div>
 
-              {/* Table */}
+             
               <div className="overflow-x-auto">
                 <table className="w-full">
                   <thead>
@@ -167,7 +167,7 @@ export default function UserLoanStatus() {
                           </div>
                         </td>
 
-                        {/* Credit Score Cell - NOW CLICKABLE */}
+                        
                         <td className="py-5 px-6">
                           <button
                             onClick={() => handleScoreClick(loan)}
@@ -214,7 +214,7 @@ export default function UserLoanStatus() {
                           </button>
                         </td>
 
-                        {/* System Status Cell */}
+                        
                         <td className="py-5 px-6">
                           <div className={`inline-flex items-center px-3 py-1.5 rounded-full text-sm font-semibold ${getStatusColor(loan.approvalStatus)}`}>
                             {loan.approvalStatus === "Pre-Approved" && (
@@ -231,7 +231,7 @@ export default function UserLoanStatus() {
                           </div>
                         </td>
 
-                        {/* Final Decision Cell */}
+                        
                         <td className="py-5 px-6">
                           <div className={`px-4 py-2.5 rounded-xl font-bold ${getApprovalColor(loan.adminFinalStatus)}`}>
                             <div className="flex items-center justify-between">
@@ -265,7 +265,7 @@ export default function UserLoanStatus() {
                   </tbody>
                 </table>
 
-                {/* Empty State */}
+                
                 {loans.length === 0 && (
                   <div className="text-center py-16">
                     <div className="w-24 h-24 mx-auto mb-6 text-gray-300 dark:text-gray-600">
@@ -291,7 +291,7 @@ export default function UserLoanStatus() {
             </div>
           </div>
 
-          {/* Right Panel - Summary & Stats */}
+          
           <div className="lg:w-1/3">
             <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg dark:shadow-gray-900/30 p-6 sticky top-8 transition-colors duration-200">
               {/* Summary Stats */}
@@ -335,7 +335,7 @@ export default function UserLoanStatus() {
                 </div>
               </div>
 
-              {/* Credit Score Info */}
+             
               <div className="mb-8">
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Credit Score Guide</h3>
                 <div className="space-y-3">
@@ -363,7 +363,7 @@ export default function UserLoanStatus() {
                 </div>
               </div>
 
-              {/* Quick Actions */}
+             
               <div>
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Quick Actions</h3>
                 <div className="space-y-3">
@@ -392,7 +392,7 @@ export default function UserLoanStatus() {
         </div>
       </div>
 
-      {/* Credit Score Breakdown Modal */}
+      
       {showScoreModal && selectedLoan && (
         <div className="fixed inset-0 bg-black/60 dark:bg-black/70 flex items-center justify-center z-50 p-4">
           <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl w-full max-w-md max-h-[90vh] overflow-y-auto">
@@ -411,7 +411,7 @@ export default function UserLoanStatus() {
                 </button>
               </div>
               
-              {/* Score Summary */}
+             
               <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-gray-900 dark:to-gray-800 rounded-xl p-4 mb-6">
                 <div className="text-center">
                   <div className="text-5xl font-bold text-blue-600 dark:text-blue-400 mb-2">
@@ -430,7 +430,7 @@ export default function UserLoanStatus() {
                 </div>
               </div>
               
-              {/* Loan Info */}
+              
               <div className="space-y-4 mb-6">
                 <div className="flex justify-between">
                   <span className="text-gray-600 dark:text-gray-300">Loan Amount:</span>
@@ -466,7 +466,7 @@ export default function UserLoanStatus() {
                 </div>
               </div>
               
-              {/* Check for breakdown data */}
+              
               {(() => {
                 const breakdown = getLatestBreakdown();
                 if (breakdown) {
@@ -496,7 +496,7 @@ export default function UserLoanStatus() {
                 return null;
               })()}
               
-              {/* Note about breakdown */}
+              
               <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-4">
                 <div className="flex items-start">
                   <svg className="w-5 h-5 text-yellow-500 dark:text-yellow-400 mt-0.5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">

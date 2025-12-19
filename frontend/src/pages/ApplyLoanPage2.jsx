@@ -20,7 +20,7 @@ export default function ApplyLoanPage2() {
   const [isApproved, setIsApproved] = useState(false);
   const [creditScoreData, setCreditScoreData] = useState(null);
 
-  // ---------------- VALIDATE STEP-1 DATA ----------------
+  
   useEffect(() => {
     if (checked) return;
 
@@ -49,7 +49,7 @@ export default function ApplyLoanPage2() {
     );
   }
 
-  // ---------------- SUBMIT HANDLER ----------------
+  
   const handleSubmit = async () => {
     if (!panFile || !salarySlip) {
       alert("Please upload both PAN Card and Salary Slip.");
@@ -61,17 +61,17 @@ export default function ApplyLoanPage2() {
     try {
       const form = new FormData();
 
-      // FILES
+      
       form.append("pan", panFile);
       form.append("salarySlip", salarySlip);
 
-      // USER DETAILS (FIXED KEYS)
+      
       form.append("bankId", loanDetails.bankId);
       form.append("userName", loanDetails.name);
       form.append("userEmail", loanDetails.email);
       form.append("phoneNumber", loanDetails.phoneNumber);
 
-      // LOAN DETAILS
+      
       form.append("panNumber", loanDetails.panNumber);
       form.append("salary", loanDetails.salary);
       form.append("requestedAmount", loanDetails.requestedAmount);
@@ -99,7 +99,7 @@ export default function ApplyLoanPage2() {
         loanId: res.data.loanId
       }));
       
-      // Set credit score data state
+      
       setCreditScoreData({
         creditScore: res.data.creditScore,
         rating: res.data.creditRating,
@@ -124,14 +124,14 @@ export default function ApplyLoanPage2() {
     setLoading(false);
   };
 
-  // ---------------- UI ----------------
+  
   return (
     <>
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900 p-4 md:p-8 transition-colors duration-200">
         <EmiCalculatorButton />
         <ProfileIcon />
 
-        {/* Debug Button - Temporary */}
+        
         <button
           onClick={() => {
             console.log("Current state:", {
@@ -148,10 +148,10 @@ export default function ApplyLoanPage2() {
           Debug State
         </button>
 
-        {/* Test Modal Button - Temporary */}
+       
         <button
           onClick={() => {
-            // Test modal with rejected state
+            
             setCreditScoreData({
               creditScore: 350,
               rating: "Poor",
@@ -172,14 +172,14 @@ export default function ApplyLoanPage2() {
         </button>
 
         <div className="max-w-4xl mx-auto">
-          {/* Header */}
+         
           <div className="mb-8">
             <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Loan Application</h1>
             <p className="text-gray-600 dark:text-gray-300 mt-2">Step 2: Document Upload & Submission</p>
           </div>
 
           <div className="flex flex-col lg:flex-row gap-8">
-            {/* Left Panel - Form */}
+           
             <div className="lg:w-2/3">
               <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg dark:shadow-gray-900/30 overflow-hidden transition-colors duration-200">
                 {/* Form Header */}
@@ -193,7 +193,7 @@ export default function ApplyLoanPage2() {
                   </div>
                 </div>
 
-                {/* User Info */}
+                
                 <div className="px-8 py-6 bg-blue-50 dark:bg-blue-900/20 border-b border-gray-200 dark:border-gray-700">
                   <div className="flex items-center justify-between">
                     <div>
@@ -207,7 +207,7 @@ export default function ApplyLoanPage2() {
                   </div>
                 </div>
 
-                {/* Form Content */}
+               
                 <div className="p-8">
                   <div className="space-y-8">
                     {/* Progress Bar */}
@@ -262,7 +262,7 @@ export default function ApplyLoanPage2() {
                       )}
                     </div>
 
-                    {/* Salary Slip Upload */}
+                   
                     <div className="border border-gray-200 dark:border-gray-700 rounded-xl p-6">
                       <div className="flex items-center justify-between mb-4">
                         <div>
@@ -321,7 +321,7 @@ export default function ApplyLoanPage2() {
                     </div>
                   </div>
 
-                  {/* Submit Button */}
+                 
                   <div className="mt-10 pt-8 border-t border-gray-200 dark:border-gray-700">
                     <button
                       onClick={handleSubmit}
@@ -345,7 +345,7 @@ export default function ApplyLoanPage2() {
               </div>
             </div>
 
-            {/* Right Panel - Info & Progress */}
+           
             <div className="lg:w-1/3">
               <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg dark:shadow-gray-900/30 p-6 sticky top-8 transition-colors duration-200">
                 {/* Application Summary */}
@@ -379,7 +379,7 @@ export default function ApplyLoanPage2() {
                   </div>
                 </div>
 
-                {/* Document Checklist */}
+                
                 <div className="mb-8">
                   <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Document Checklist</h3>
                   <div className="space-y-3">
@@ -416,7 +416,7 @@ export default function ApplyLoanPage2() {
                   </div>
                 </div>
 
-                {/* Next Steps */}
+                
                 <div>
                   <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Next Steps</h3>
                   <ul className="space-y-3">
@@ -438,7 +438,7 @@ export default function ApplyLoanPage2() {
             </div>
           </div>
 
-          {/* Footer */}
+          
           <div className="mt-8 text-center">
             <p className="text-sm text-gray-500 dark:text-gray-400">
               <svg className="w-4 h-4 inline-block mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -450,7 +450,7 @@ export default function ApplyLoanPage2() {
         </div>
       </div>
 
-      {/* Modal */}
+      
       {showModal && (
         <div className="fixed inset-0 bg-black/60 dark:bg-black/70 flex items-center justify-center z-50 p-4">
           <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
@@ -471,7 +471,7 @@ export default function ApplyLoanPage2() {
 
             {/* Modal Body */}
             <div className="p-6">
-              {/* Show breakdown immediately if approved */}
+             
               {isApproved && creditScoreData && (
                 <div className="mb-8 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-gray-900 dark:to-gray-800 p-6 rounded-xl">
                   <div className="flex items-center justify-between mb-4">
@@ -492,7 +492,7 @@ export default function ApplyLoanPage2() {
                     </div>
                   </div>
                   
-                  {/* Credit Score Breakdown */}
+                  
                   {creditScoreData.scoreBreakdown && (
                     <div className="mt-6 pt-6 border-t border-gray-200 dark:border-gray-700">
                       <h4 className="font-bold text-gray-900 dark:text-white mb-4 flex items-center">
@@ -502,7 +502,7 @@ export default function ApplyLoanPage2() {
                         Score Breakdown
                       </h4>
                       
-                      {/* Base Score */}
+                      
                       <div className="flex items-center justify-between mb-3 p-3 bg-white dark:bg-gray-700 rounded-lg">
                         <div className="flex items-center">
                           <div className="w-8 h-8 bg-gray-200 dark:bg-gray-600 rounded-lg flex items-center justify-center mr-3">
@@ -518,7 +518,7 @@ export default function ApplyLoanPage2() {
                         </div>
                       </div>
                       
-                      {/* Factors */}
+                      
                       <div className="space-y-2">
                         {creditScoreData.scoreBreakdown.factors.map((factor, index) => (
                           <div key={index} className="flex items-center justify-between p-3 hover:bg-gray-50 dark:hover:bg-gray-700/50 rounded-lg transition-colors duration-150">
@@ -533,7 +533,7 @@ export default function ApplyLoanPage2() {
                         ))}
                       </div>
                       
-                      {/* Total Score */}
+                      
                       <div className="mt-6 pt-6 border-t border-gray-200 dark:border-gray-700">
                         <div className="flex items-center justify-between">
                           <div className="text-lg font-bold text-gray-900 dark:text-white">Final Credit Score</div>
@@ -547,7 +547,7 @@ export default function ApplyLoanPage2() {
                 </div>
               )}
               
-              {/* Show message if rejected */}
+              
               {!isApproved && (
                 <div className="mb-8 bg-gradient-to-r from-red-50 to-orange-50 dark:from-gray-900 dark:to-gray-800 p-6 rounded-xl">
                   <div className="flex items-center mb-4">
@@ -566,7 +566,7 @@ export default function ApplyLoanPage2() {
                     </div>
                   </div>
                   
-                  {/* Show credit score if available */}
+                  
                   {creditScoreData && (
                     <>
                       <div className="bg-white dark:bg-gray-700 p-4 rounded-lg mb-4">
@@ -580,7 +580,7 @@ export default function ApplyLoanPage2() {
                         </div>
                       </div>
                       
-                      {/* Show key negative factors */}
+                      
                       {creditScoreData.scoreBreakdown && (
                         <div className="mt-6">
                           <h4 className="font-bold text-gray-900 dark:text-white mb-3">Areas to Improve:</h4>
@@ -604,7 +604,7 @@ export default function ApplyLoanPage2() {
                     </>
                   )}
                   
-                  {/* Show generic message if no creditScoreData */}
+                  
                   {!creditScoreData && (
                     <div className="bg-white dark:bg-gray-700 p-4 rounded-lg">
                       <p className="text-gray-700 dark:text-gray-300">
@@ -616,7 +616,7 @@ export default function ApplyLoanPage2() {
                 </div>
               )}
 
-              {/* Action Buttons */}
+              
               <div className="flex gap-4">
                 {/* If approved: Show breakdown AND go to My Loans */}
                 {isApproved ? (
@@ -635,7 +635,7 @@ export default function ApplyLoanPage2() {
                     </button>
                   </>
                 ) : (
-                  // If rejected: Just go back to dashboard
+                  
                   <button
                     onClick={() => navigate("/user")}
                     className="w-full py-4 bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 dark:from-red-500 dark:to-red-600 dark:hover:from-red-600 dark:hover:to-red-700 text-white font-bold rounded-xl transition-all duration-200"

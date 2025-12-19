@@ -1,10 +1,10 @@
 import axios from "axios";
 
 const authApi = axios.create({
-  baseURL: "http://localhost:5000/auth", // ✅ FIXED
+  baseURL: "http://localhost:5000/auth", 
 });
 
-// attach admin token automatically
+
 authApi.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem("adminToken");

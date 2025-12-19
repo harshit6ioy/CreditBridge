@@ -35,7 +35,7 @@ export default function UserLandingPage() {
 
       console.log("Verified User:", res.data);
 
-      // Save verified user to use in ApplyLoanPage1
+      
       localStorage.setItem("verifiedUser", JSON.stringify(res.data.user));
 
       alert("User verified successfully!");
@@ -58,13 +58,13 @@ export default function UserLandingPage() {
       dark:bg-[url('https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&w=1800&q=80')]
       flex items-center justify-center relative"
     >
-      {/* Overlay */}
+     
       <div className="absolute inset-0 bg-black/40 dark:bg-black/60"></div>
 
       {/* Theme Toggle (global UI button) */}
       <ThemeToggle />
 
-      {/* Card */}
+      
       <div
         className="relative z-10 w-[90%] max-w-md bg-white/20 dark:bg-gray-900/40 
         backdrop-blur-xl border border-white/40 dark:border-gray-700 
@@ -76,7 +76,7 @@ export default function UserLandingPage() {
 
         <div className="flex flex-col gap-4">
 
-          {/* Full Name */}
+          
           <input
             type="text"
             placeholder="Full Name"
@@ -87,7 +87,7 @@ export default function UserLandingPage() {
             onChange={(e) => setName(e.target.value.replace(/^\s+/, ""))}
           />
 
-          {/* Email */}
+          
           <input
             type="email"
             placeholder="Email Address"
@@ -98,7 +98,7 @@ export default function UserLandingPage() {
             onChange={(e) => setEmail(e.target.value.replace(/^\s+/, ""))}
           />
 
-          {/* Bank ID */}
+          
           <input
             type="number"
             placeholder="Bank ID"
@@ -109,10 +109,10 @@ export default function UserLandingPage() {
             onChange={(e) => setBankId(e.target.value.replace(/^\s+/, ""))}
           />
 
-          {/* Password Field - ADDED */}
+          
           <input
-            type="password"
-            placeholder="Password"
+            type="number"
+            placeholder="Account Number"
             className="w-full p-3 rounded-lg bg-white/60 dark:bg-gray-800/70 
             text-gray-900 dark:text-white font-bold border border-gray-300 dark:border-gray-700
             focus:ring-2 focus:ring-blue-500 outline-none"
@@ -120,7 +120,7 @@ export default function UserLandingPage() {
             onChange={(e) => setPassword(e.target.value.replace(/^\s+/, ""))}
           />
 
-          {/* Submit Button */}
+          
           <button
             onClick={handleSubmit}
             disabled={loading}

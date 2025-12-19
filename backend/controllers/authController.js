@@ -5,9 +5,7 @@ const Admin = require("../models/Admin");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
-// ------------------------------------------------------
-// ADMIN AUTHENTICATION (KEEP THIS AS-IS)
-// ------------------------------------------------------
+
 exports.signup = async (req, res) => {
   const { name, email, password } = req.body;
 
@@ -40,9 +38,7 @@ exports.login = async (req, res) => {
   res.json({ message: "Login successful", token });
 };
 
-// ------------------------------------------------------
-// USER VERIFICATION WITH PASSWORD (UPDATED)
-// ------------------------------------------------------
+
 exports.verifyUser = (req, res) => {
   let { bankId, password } = req.body; // CHANGED: Now only needs bankId and password
 
@@ -58,7 +54,7 @@ exports.verifyUser = (req, res) => {
 
   const idNumber = Number(bankId);
 
-  // Find user by bankId and password
+  
   const user = mockData.find(
     (u) => u.id === idNumber && u.password === password
   );
@@ -70,7 +66,7 @@ exports.verifyUser = (req, res) => {
     });
   }
 
-  // Return user WITHOUT password for security
+  
   const { password: _, ...userWithoutPassword } = user;
   
   return res.json({
@@ -80,9 +76,7 @@ exports.verifyUser = (req, res) => {
   });
 };
 
-// ------------------------------------------------------
-// APPLY LOAN (REQUIRES FILE UPLOAD) - NO CHANGES NEEDED
-// ------------------------------------------------------
+
 exports.applyLoan = async (req, res) => {
   try {
     let {
@@ -99,7 +93,7 @@ exports.applyLoan = async (req, res) => {
       userEmail,
     } = req.body;
 
-    // ---------------- BASIC VALIDATION ----------------
+   
     if (
       !bankId ||
       !panNumber ||
@@ -135,7 +129,7 @@ exports.applyLoan = async (req, res) => {
       });
     }
 
-    // ---------------- PAN CHECK ----------------
+    
     if (user.pan.toUpperCase() !== panNumber.toUpperCase()) {
       return res.status(400).json({
         success: false,
@@ -143,7 +137,7 @@ exports.applyLoan = async (req, res) => {
       });
     }
 
-    // ---------------- SALARY CHECK ----------------
+    
     const numericSalary = Number(salary);
     const numericRequestedAmount = Number(requestedAmount);
 
@@ -154,7 +148,7 @@ exports.applyLoan = async (req, res) => {
       });
     }
 
-    // ---------------- CREDIT SCORE ----------------
+   
     const creditResult = calculateCreditScore(
       {
         requestedAmount: numericRequestedAmount,
@@ -167,7 +161,7 @@ exports.applyLoan = async (req, res) => {
       user
     );
 
-    // DEBUG LOG
+    
     console.log("Credit Result:", {
       score: creditResult.score,
       rating: creditResult.rating,
@@ -187,7 +181,7 @@ exports.applyLoan = async (req, res) => {
       });
     }
 
-    // ---------------- SAVE LOAN ----------------
+    
     const loan = new Loan({
       bankId: Number(bankId),
       userName: userName.trim(),
@@ -214,14 +208,14 @@ exports.applyLoan = async (req, res) => {
 
     await loan.save();
     
-    // DEBUG LOG after save
+    
     console.log("Loan saved successfully:", {
       id: loan._id,
       approvalStatus: loan.approvalStatus,
       creditScore: loan.creditScore,
     });
 
-    // ---------------- SEND RESPONSE ----------------
+   
     return res.json({
       success: true,
       message: "Loan application submitted.",
@@ -250,9 +244,7 @@ exports.applyLoan = async (req, res) => {
   }
 };
 
-// ------------------------------------------------------
-// USER LOANS
-// ------------------------------------------------------
+
 exports.getUserLoans = async (req, res) => {
   try {
     const { bankId } = req.params;
@@ -267,9 +259,7 @@ exports.getUserLoans = async (req, res) => {
   }
 };
 
-// ------------------------------------------------------
-// ADMIN FUNCTIONS
-// ------------------------------------------------------
+
 exports.adminUpdateLoan = async (req, res) => {
   const { decision } = req.body;
 

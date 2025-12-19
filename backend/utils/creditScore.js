@@ -232,18 +232,18 @@ function calculateCreditScore(userForm, bankUser) {
   if (totalScore > 900) totalScore = 900;
   if (totalScore < 300) totalScore = 300;
 
-  // Get rating
+  
   let rating = "";
   if (totalScore >= 700) rating = "Excellent";
   else if (totalScore >= 600) rating = "Good";
   else if (totalScore >= 500) rating = "Fair";
   else rating = "Poor";
 
-  // Get decision
+  
   const isApproved = totalScore >= 500;
   const decision = isApproved ? "Pre-Approved" : "Rejected";
 
-  // Return result
+  
   return {
     score: totalScore,
     rating: rating,

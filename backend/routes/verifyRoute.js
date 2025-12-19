@@ -4,10 +4,10 @@ const controller = require("../controllers/verifyController");
 const auth = require("../middleware/auth");
 const upload = require("../utils/multerConfig");
 
-// 1. USER VERIFICATION — NO MULTER HERE
+
 router.post("/verify-user", controller.verifyUser);
 
-// 2. APPLY LOAN — WITH MULTER (PAN + salary slip)
+
 router.post(
   "/apply-loan",
   upload.fields([
@@ -17,7 +17,7 @@ router.post(
   controller.applyLoan
 );
 
-// 3. ADMIN ROUTES
+
 router.put("/admin/update-loan/:id", auth, controller.adminUpdateLoan);
 router.get("/all-loans", auth, controller.getAllLoans);
 router.get("/approved-loans", auth, controller.getApprovedLoans);

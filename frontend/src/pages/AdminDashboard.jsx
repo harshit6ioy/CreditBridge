@@ -22,7 +22,7 @@ export default function AdminDashboard() {
 
   const token = localStorage.getItem("adminToken");
 
-  // ================= AUTH CHECK =================
+  
   useEffect(() => {
     if (!token) {
       navigate("/admin-login");
@@ -31,7 +31,7 @@ export default function AdminDashboard() {
     fetchLoans();
   }, [token]);
 
-  // ================= FETCH LOANS =================
+ 
   async function fetchLoans() {
     setLoading(true);
     try {
@@ -75,7 +75,7 @@ export default function AdminDashboard() {
     }
   }
 
-  // ================= UPDATE STATUS =================
+ 
   async function updateLoanStatus(id, decision) {
     try {
       await api.put(
@@ -92,13 +92,13 @@ export default function AdminDashboard() {
     }
   }
 
-  // ================= ENHANCED SEARCH FUNCTION =================
+  
   const searchInLoan = (loan, searchTerm) => {
     if (!searchTerm.trim()) return true;
     
     const term = searchTerm.toLowerCase().trim();
     
-    // Check all possible ID and searchable fields
+    
     const fieldsToSearch = [
       loan.bankId, // Try bankId first
       loan._id, // MongoDB _id
@@ -119,7 +119,7 @@ export default function AdminDashboard() {
     });
   };
 
-  // ================= APPLY FILTERS =================
+ 
   const applyFilters = () => {
     try {
       console.log("Applying filters...");
@@ -128,7 +128,7 @@ export default function AdminDashboard() {
       
       let results = [...loans];
 
-      // Apply search - Search in all possible fields
+      
       if (searchTerm.trim()) {
         const term = searchTerm.toLowerCase().trim();
         results = results.filter(loan => {
@@ -154,12 +154,12 @@ export default function AdminDashboard() {
         console.log("After search count:", results.length);
       }
 
-      // Apply status filter
+      
       if (statusFilter !== "All") {
         results = results.filter(loan => loan?.adminFinalStatus === statusFilter);
       }
 
-      // Apply amount filter
+      
       const minAmount = amountRange.min ? parseInt(amountRange.min) : 0;
       const maxAmount = amountRange.max ? parseInt(amountRange.max) : Infinity;
       
@@ -170,7 +170,7 @@ export default function AdminDashboard() {
         });
       }
 
-      // Apply sorting
+      
       results.sort((a, b) => {
         const aAmount = a?.requestedAmount || 0;
         const bAmount = b?.requestedAmount || 0;
@@ -214,14 +214,14 @@ export default function AdminDashboard() {
     }
   };
 
-  // Apply filters when any filter changes
+ 
   useEffect(() => {
     if (loans.length > 0) {
       applyFilters();
     }
   }, [loans, searchTerm, statusFilter, amountRange, sortBy]);
 
-  // ================= RESET FILTERS =================
+ 
   const resetFilters = () => {
     setSearchTerm("");
     setStatusFilter("All");
@@ -264,7 +264,7 @@ export default function AdminDashboard() {
           </div>
         )}
 
-        {/* ================= STATS CARDS ================= */}
+       
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-6 mb-8">
           <StatCard 
             title="Approved Loans" 
@@ -286,7 +286,7 @@ export default function AdminDashboard() {
           />
         </div>
 
-        {/* ================= SEARCH & FILTERS ================= */}
+       
         <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-lg p-4 md:p-6 mb-6">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
             <h2 className="text-xl font-bold text-gray-900 dark:text-white">
@@ -307,7 +307,7 @@ export default function AdminDashboard() {
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 mb-6">
-            {/* Search with button */}
+            
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 Search (ID, Name, Email, PAN, Phone)
@@ -404,7 +404,7 @@ export default function AdminDashboard() {
           </div>
         </div>
 
-        {/* ================= LOANS TABLE ================= */}
+       
         {loading ? (
           <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-xl p-12 text-center">
             <div className="inline-block animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
@@ -603,7 +603,7 @@ export default function AdminDashboard() {
   );
 }
 
-// ================= STAT CARD =================
+
 function StatCard({ title, value, color, icon }) {
   const colorMap = {
     green: "bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800 text-green-700 dark:text-green-300",

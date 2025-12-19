@@ -14,7 +14,7 @@ export default function ProfilePage() {
     pending: 0,
   });
 
-  // ---------------- LOAD USER ----------------
+  
   useEffect(() => {
     const storedUser = JSON.parse(localStorage.getItem("verifiedUser"));
 
@@ -27,7 +27,7 @@ export default function ProfilePage() {
     fetchLoanStats(storedUser.id);
   }, [navigate]);
 
-  // ---------------- FETCH LOAN STATS ----------------
+  
   async function fetchLoanStats(bankId) {
     try {
       const res = await api.get(`/user-loans/${bankId}`);
@@ -53,7 +53,7 @@ export default function ProfilePage() {
     );
   }
 
-  // ---------------- UI ----------------
+  
   return (
     <div className="min-h-screen bg-gray-100 dark:bg-gray-900 p-6">
       <ThemeToggle />
@@ -81,7 +81,7 @@ export default function ProfilePage() {
           </div>
         </div>
 
-        {/* ================= LOAN SUMMARY ================= */}
+       
         <div className="bg-white dark:bg-gray-800
           border border-gray-300 dark:border-gray-700
           rounded-3xl shadow-2xl p-6">
@@ -98,7 +98,7 @@ export default function ProfilePage() {
           </div>
         </div>
 
-        {/* ================= ACTIONS ================= */}
+       
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
 
           <button
@@ -134,7 +134,7 @@ export default function ProfilePage() {
   );
 }
 
-/* ================= SMALL COMPONENTS ================= */
+
 
 function Info({ label, value }) {
   return (

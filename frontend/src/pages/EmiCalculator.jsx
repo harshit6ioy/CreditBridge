@@ -6,7 +6,7 @@ export default function EmiCalculator() {
   const [rate, setRate] = useState(8.5);
   const [years, setYears] = useState(5);
 
-  // ---------------- EMI CALCULATION ----------------
+ 
   const monthlyRate = rate / 12 / 100;
   const months = years * 12;
 
@@ -17,7 +17,7 @@ export default function EmiCalculator() {
   const totalPayable = emi * months;
   const totalInterest = totalPayable - amount;
 
-  // ---------------- UI ----------------
+  
   return (
     <div className="min-h-screen bg-gradient-to-br
       from-blue-50 via-white to-indigo-50
@@ -35,7 +35,7 @@ export default function EmiCalculator() {
         border border-gray-300 dark:border-gray-700
         rounded-3xl shadow-2xl p-8 space-y-8">
 
-        {/* ================= INPUTS ================= */}
+       
         <Slider
           label="Loan Amount (₹)"
           min={50000}
@@ -63,7 +63,7 @@ export default function EmiCalculator() {
           setValue={setYears}
         />
 
-        {/* ================= RESULTS ================= */}
+        
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-10">
 
           <ResultCard
@@ -93,7 +93,7 @@ export default function EmiCalculator() {
   );
 }
 
-/* ================= COMPONENTS ================= */
+
 
 function Slider({ label, min, max, step, value, setValue }) {
   return (

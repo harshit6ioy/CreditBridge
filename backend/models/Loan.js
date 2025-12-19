@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const loanSchema = new mongoose.Schema(
   {
-    // ================= USER IDENTITY =================
+    
     bankId: {
       type: Number,
       required: true,
@@ -27,7 +27,7 @@ const loanSchema = new mongoose.Schema(
       trim: true,
     },
 
-    // ================= LOAN DETAILS =================
+    
     panNumber: {
       type: String,
       required: true,
@@ -71,7 +71,7 @@ const loanSchema = new mongoose.Schema(
       required: true,
     },
 
-    // ================= SYSTEM DECISIONS =================
+    
     approvalStatus: {
       type: String,
       enum: ["Pre-Approved", "Rejected"],  // CHANGED: "Pre-Rejected" → "Rejected"
@@ -84,7 +84,7 @@ const loanSchema = new mongoose.Schema(
       default: "Pending",
     },
 
-    // ================= DOCUMENTS =================
+    
     documents: {
       panDoc: {
         type: String,

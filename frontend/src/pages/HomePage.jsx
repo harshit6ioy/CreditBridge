@@ -31,7 +31,7 @@ export default function HomePage() {
 
         <div className="flex flex-col gap-4">
 
-          {/* Continue as User */}
+         
           <button
             onClick={() => navigate("/user")}
             className="w-full py-3 bg-blue-600 hover:bg-blue-700 
@@ -40,7 +40,7 @@ export default function HomePage() {
             Continue as User
           </button>
 
-          {/* Continue as Admin */}
+          
           <button
             onClick={() => navigate("/admin-login")}
             className="w-full py-3 bg-gray-900 hover:bg-black 

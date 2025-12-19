@@ -26,7 +26,7 @@ export default function AdminLoginPage() {
         password: password.trim(),
       });
 
-      // ✅ store admin token
+      
       localStorage.setItem("adminToken", res.data.token);
 
       setMsg("Login Successful!");
@@ -49,7 +49,7 @@ export default function AdminLoginPage() {
       dark:bg-[url('https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?auto=format&fit=crop&w=1800&q=80')]
       flex items-center justify-center relative"
     >
-      {/* Overlay */}
+      
       <div className="absolute inset-0 bg-black/40 dark:bg-black/60"></div>
 
       <ThemeToggle />

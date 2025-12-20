@@ -1,32 +1,38 @@
 # CreditBridge
-Direct Digital Lending Platform (Third-Party Fintech Prototype)
+Beneficiary Credit Scoring with Income Verification Layer for Direct Digital Lending
 
-CreditBridge is a third-party direct digital lending platform that simulates modern fintech loan pre-verification workflows. The system automates user verification, income verification, credit scoring, and loan approval using reference bank data.
+CreditBridge is a third-party fintech prototype designed to demonstrate a beneficiary-focused credit scoring system with an integrated income verification layer for direct digital lending. The platform simulates how modern lending systems evaluate loan eligibility in a fully digital and automated manner.
 
-## Features
-- Applicant verification using reference (mock) bank data
-- Loan application with income, loan amount, and demographic details
-- Income-verification layer based on income–loan ratio
-- Rule-based credit scoring and eligibility evaluation
+## Project Objective
+To design a secure and rule-based direct digital lending workflow that verifies beneficiaries, assesses income feasibility, and generates credit decisions before final approval.
+
+## Core Features
+- Beneficiary verification using reference bank data
+- Income verification layer based on income, loan amount, and income-to-loan ratio
+- Rule-based credit scoring for eligibility assessment
+- Consideration of age, marital status, dependents, and loan purpose
 - KYC and income document upload
-- Loan status generation (Approved / Rejected / Pending)
-- Admin dashboard for monitoring and final document approval
+- Loan decision generation (Approved / Rejected / Pending)
+- Admin-level document review and final approval
 
 ## Lending Workflow
-1. Applicant verification via reference bank data  
-2. Income verification using income, loan amount, and ratio  
-3. Credit scoring with additional risk factors  
-4. Document upload and validation  
-5. Final admin-level approval  
+1. Beneficiary verification via reference bank records
+2. Income verification and affordability analysis
+3. Credit scoring and risk evaluation
+4. Document submission and validation
+5. Final admin approval for compliance
 
-## Tech Stack
+## Technology Stack
 - Frontend: React
 - Backend: Node.js, Express
 - Database: MongoDB
 - File Handling: Multer
 
-## Purpose
-This project is built for educational and demonstration purposes to showcase a secure, automated, end-to-end direct digital lending workflow.
+## Use Case
+This project illustrates how third-party platforms enable fast, paperless, and scalable beneficiary credit assessment in direct digital lending ecosystems.
+
+## Disclaimer
+This is a demonstration project built for educational purposes and does not represent a real financial product.
 
 ## Author
 Harshit Aggarwal

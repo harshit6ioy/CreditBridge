@@ -171,7 +171,7 @@ exports.applyLoan = async (req, res) => {
 
     const systemDecision = creditResult.decision; // "Pre-Approved" or "Rejected"
 
-    // Validate decision matches model enum
+    
     const validDecisions = ["Pre-Approved", "Rejected"];
     if (!validDecisions.includes(systemDecision)) {
       console.error(`Invalid decision from creditscore: ${systemDecision}`);
@@ -228,7 +228,7 @@ exports.applyLoan = async (req, res) => {
   } catch (err) {
     console.error("APPLY LOAN ERROR →", err);
     
-    // Check if it's a Mongoose validation error
+    
     if (err.name === 'ValidationError') {
       return res.status(400).json({
         success: false,

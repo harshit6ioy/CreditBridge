@@ -74,7 +74,7 @@ const loanSchema = new mongoose.Schema(
     
     approvalStatus: {
       type: String,
-      enum: ["Pre-Approved", "Rejected"],  // CHANGED: "Pre-Rejected" → "Rejected"
+      enum: ["Pre-Approved", "Rejected"],  
       required: true,
     },
 

@@ -1,9 +1,9 @@
-// creditscore.js - MODIFIED VERSION FOR HIGHER SCORES
+
 
 function calculateCreditScore(userForm, bankUser) {
-  let totalScore = 500; // INCREASED from 300 to 500
+  let totalScore = 500; 
 
-  // Get values from form
+  
   const loanAmount = Number(userForm.requestedAmount);
   const salary = Number(userForm.salary);
   const age = Number(userForm.age);
@@ -11,25 +11,25 @@ function calculateCreditScore(userForm, bankUser) {
   const maritalStatus = userForm.maritalStatus;
   const loanPurpose = userForm.loanPurpose;
 
-  // Store breakdown
+  
   const breakdown = {
-    baseScore: 500, // UPDATED to match
+    baseScore: 500, 
     factors: []
   };
 
-  // 1. Check loan amount vs salary - INCREASED POINTS
+ 
   const ratio = loanAmount / salary;
   let factorScore = 0;
   let reason = "";
   
   if (ratio <= 1) {
-    factorScore = 150; // INCREASED: Very low ratio
+    factorScore = 150; 
     reason = "Excellent: Loan amount is less than your salary";
   } else if (ratio <= 2) {
-    factorScore = 100; // INCREASED from 80
+    factorScore = 100; 
     reason = "Good: Loan amount is less than 2 times your salary";
   } else if (ratio <= 3) {
-    factorScore = 50; // INCREASED from 40
+    factorScore = 50; 
     reason = "Average: Loan amount is 2-3 times your salary";
   } else if (ratio <= 5) {
     factorScore = 10;
@@ -46,15 +46,15 @@ function calculateCreditScore(userForm, bankUser) {
     reason: reason
   });
 
-  // 2. Check marital status - INCREASED
+  
   factorScore = 0;
   reason = "";
   
   if (maritalStatus === "Married") {
-    factorScore = 50; // INCREASED from 30
+    factorScore = 50; 
     reason = "Good: Married applicants are more stable";
   } else {
-    factorScore = 20; // INCREASED from 0 (Single now gets points)
+    factorScore = 20;
     reason = "Average: Single applicant";
   }
   
@@ -65,7 +65,7 @@ function calculateCreditScore(userForm, bankUser) {
     reason: reason
   });
 
-  // 3. Check existing loans - INCREASED
+ 
   factorScore = 0;
   reason = "";
   const hasExistingLoans = bankUser.existing_loans && bankUser.existing_loans.length > 0;
@@ -80,7 +80,7 @@ function calculateCreditScore(userForm, bankUser) {
       reason = "Poor: You have multiple existing loans";
     }
   } else {
-    factorScore = 60; // INCREASED from 30
+    factorScore = 60;
     reason = "Excellent: No existing loans";
   }
   
@@ -91,12 +91,12 @@ function calculateCreditScore(userForm, bankUser) {
     reason: reason
   });
 
-  // 4. Check age - INCREASED
+  
   factorScore = 0;
   reason = "";
   
   if (age >= 28 && age <= 45) {
-    factorScore = 80; // INCREASED from 50 (Prime earning years)
+    factorScore = 80; 
     reason = "Excellent: Prime age for loans (28-45 years)";
   } else if (age >= 25 && age < 28) {
     factorScore = 50;
@@ -119,12 +119,12 @@ function calculateCreditScore(userForm, bankUser) {
     reason: reason
   });
 
-  // 5. Check dependents - INCREASED
+  
   factorScore = 0;
   reason = "";
   
   if (dependents === 0) {
-    factorScore = 40; // INCREASED from 20
+    factorScore = 40; 
     reason = "Excellent: No dependents";
   } else if (dependents === 1) {
     factorScore = 30;
@@ -136,7 +136,7 @@ function calculateCreditScore(userForm, bankUser) {
     factorScore = 10;
     reason = "Average: Moderate dependents";
   } else {
-    factorScore = -30; // More severe penalty
+    factorScore = -30; 
     reason = "Poor: Many dependents";
   }
   
@@ -147,24 +147,24 @@ function calculateCreditScore(userForm, bankUser) {
     reason: reason
   });
 
-  // 6. Check loan purpose - INCREASED
+ 
   factorScore = 0;
   reason = "";
   
   if (loanPurpose === "Education") {
-    factorScore = 80; // INCREASED from 40
+    factorScore = 80; 
     reason = "Excellent: Education loans have lowest risk";
   } else if (loanPurpose === "Home") {
-    factorScore = 70; // INCREASED from 30
+    factorScore = 70; 
     reason = "Excellent: Home loans are secured and low risk";
   } else if (loanPurpose === "Medical") {
-    factorScore = 60; // INCREASED from 20
+    factorScore = 60; 
     reason = "Good: Medical loans are necessary expenses";
   } else if (loanPurpose === "Business") {
-    factorScore = 20; // Less penalty, now positive
+    factorScore = 20; 
     reason = "Average: Business loans have moderate risk";
   } else if (loanPurpose === "Personal") {
-    factorScore = 10; // Less penalty, now positive
+    factorScore = 10; 
     reason = "Fair: Personal loans have higher risk";
   } else {
     factorScore = 0;
@@ -178,7 +178,7 @@ function calculateCreditScore(userForm, bankUser) {
     reason: reason
   });
 
-  // 7. NEW: Salary range bonus
+ 
   factorScore = 0;
   reason = "";
   
@@ -206,7 +206,7 @@ function calculateCreditScore(userForm, bankUser) {
     reason: reason
   });
 
-  // 8. NEW: Employment stability (based on age)
+  
   factorScore = 0;
   reason = "";
   
